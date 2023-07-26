@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Typography,
@@ -43,43 +43,65 @@ const statuses = ["In-Progress", "PickUp-Scheduled", "Complete"];
 const PickUpRequests = () => {
   const [newItem, setNewItem] = useState({ type: "", weight: "", unit: "" });
   const [editedReward, setEditedReward] = useState(""); 
-  const [items, setItems] = useState([
-    {
-      id: "1",
-      user_id: "aaljsdljf",
-      user_name: "Falgun",
-      user_address: "1333 South Park Street",
-      pickup_date: "2023-07-28",
-      pickup_time: "5:00 pm - 6:00 pm",
-      pickup_by: "Ronil",
-      status: "PickUp Scheduled",
-      reward: "0",
-      items_in_bag: [
-        
-      ],
-    },
-    {
-      id: "2",
-      user_id: "aasdfljlkj",
-      user_name: "John",
-      user_address: "456 Oak Avenue",
-      pickup_date: "2023-07-29",
-      pickup_time: "3:00 pm - 4:00 pm",
-      pickup_by: "Alice",
-      status: "In-Progress",
-      reward: "10",
-      items_in_bag: [
-       
-      ],
-    },
-  ]);
-
+  const [items, setItems] = useState([]); 
+  const [loading, setLoading] = useState(true);
   const [editingItemId, setEditingItemId] = useState(null);
+  // const [items, setItems] = useState([
+  //   {
+  //     id: "1",
+  //     user_id: "aaljsdljf",
+  //     user_name: "Falgun",
+  //     user_address: "1333 South Park Street",
+  //     pickup_date: "2023-07-28",
+  //     pickup_time: "5:00 pm - 6:00 pm",
+  //     pickup_by: "Ronil",
+  //     status: "PickUp Scheduled",
+  //     reward: "0",
+  //     items_in_bag: [
+        
+  //     ],
+  //   },
+  //   {
+  //     id: "2",
+  //     user_id: "aasdfljlkj",
+  //     user_name: "John",
+  //     user_address: "456 Oak Avenue",
+  //     pickup_date: "2023-07-29",
+  //     pickup_time: "3:00 pm - 4:00 pm",
+  //     pickup_by: "Alice",
+  //     status: "In-Progress",
+  //     reward: "10",
+  //     items_in_bag: [
+       
+  //     ],
+  //   },
+  // ]);
+
+  
+
+  const fetchItems = async () => {
+    try {
+      const response = await fetch("https://fratlvuuxh.execute-api.us-east-1.amazonaws.com/default/AdminPickUpRequest"); // Replace with your API endpoint
+      const data = await response.json();
+      setItems(data.Items);
+     // Update the items state with the fetched data
+      setLoading(false); // Set loading to false once data is fetched
+    } catch (error) {
+      console.error("Error fetching items:", error);
+      setLoading(false); // Set loading to false in case of an error
+    }
+  };
+  useEffect(() => {
+    fetchItems(); // Fetch items when the component mounts
+  }, []); 
+
+  console.log(items)
 
   const handleStatusChange = (itemId, newStatus) => {
     const updatedItems = items.map((item) =>
-      item.id === itemId ? { ...item, status: newStatus } : item
+      item.id === itemId ? { ...item, request_status: newStatus } : item
     );
+    console.log(updatedItems);
     setItems(updatedItems);
   };
 
@@ -112,19 +134,36 @@ const PickUpRequests = () => {
     });
   };
 
+  const sendUpdatedItems = async (updatedItem) => {
+    try {
+      const response = await fetch("https://fratlvuuxh.execute-api.us-east-1.amazonaws.com/default/AdminPickUpRequest ", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedItem),
+      });
+
+      // Check if the request was successful
+      if (!response.ok) {
+        throw new Error("Error saving data");
+      }
+
+      // If successful, you can handle the response here
+      // For example, show a success message or perform additional actions
+      console.log("Data saved successfully!");
+    } catch (error) {
+      console.error("Error sending data:", error);
+      // Handle error (e.g., show an error message to the user)
+    }
+  };
+
   const handleSave = () => {
-    // Call API to save the changes
-    // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint
-    // fetch(YOUR_API_ENDPOINT, {
-    //   method: 'PUT',
-    //   body: JSON.stringify(items),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
+    let updateItem;
     setItems((prevItems) => {
       return prevItems.map((item) => {
         if (item.id === editingItemId) {
+          updateItem=item;
           return { ...item, reward: editedReward !== "" ? editedReward : item.reward };
         } else {
           return item;
@@ -133,6 +172,7 @@ const PickUpRequests = () => {
     });
     setEditedReward(""); 
     setEditingItemId(null); // Disable editing mode
+    sendUpdatedItems(updateItem)
   };
 
   const handleAddNewItem = () => {
@@ -171,33 +211,22 @@ const PickUpRequests = () => {
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
+          {loading ? (
+      <Typography variant="h6">Loading...</Typography>
+    ) : (
           <TableBody>
             {items.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>
-                  {editingItemId === item.id ? (
-                    <TextField
-                      type="text"
-                      value={item.user_name}
-                      onChange={(e) => handleStatusChange(item.id, e.target.value)}
-                    />
-                  ) : (
-                    item.user_name
-                  )}
+                    {item.user.name}
                 </TableCell>
                 <TableCell>
-                  {editingItemId === item.id ? (
-                    <TextField
-                      type="text"
-                      value={item.user_address}
-                      onChange={(e) => handleStatusChange(item.id, e.target.value)}
-                    />
-                  ) : (
-                    item.user_address
-                  )}
+                
+                    {item.pickup_address.street}
+
                 </TableCell>
-                <TableCell>{item.pickup_date}</TableCell>
-                <TableCell>{item.pickup_time}</TableCell>
+                <TableCell>{item.pickup_start_ts}</TableCell>
+                <TableCell>{item.pickup_end_ts}</TableCell>
                 <TableCell>
                   {editingItemId === item.id ? (
                     <TextField
@@ -299,7 +328,7 @@ const PickUpRequests = () => {
                 <TableCell>
                   {editingItemId === item.id ? (
                     <Select
-                      value={item.status}
+                      value={item.request_status}
                       onChange={(e) => handleStatusChange(item.id, e.target.value)}
                     >
                       {statuses.map((status) => (
@@ -309,7 +338,7 @@ const PickUpRequests = () => {
                       ))}
                     </Select>
                   ) : (
-                    item.status
+                    item.request_status
                   )}
                 </TableCell>
                 <TableCell>
@@ -317,8 +346,8 @@ const PickUpRequests = () => {
               // Show text input in edit mode
               <TextField
                 type="text"
-                value={editedReward !== "" ? editedReward : item.reward}
-                onChange={(e) => setEditedReward(e.target.value)}
+                value={item.reward}
+                onChange={(e) => handleRewardChange(item.id, e.target.value)}
               />
             ) : (
               // Display reward value in non-edit mode
@@ -338,7 +367,7 @@ const PickUpRequests = () => {
                 </ActionButtonsWrapper>
               </TableRow>
             ))}
-          </TableBody>
+          </TableBody>)}
         </Table>
       </TableWrapper>
     </ContainerWrapper>

@@ -9,7 +9,7 @@ const PickupRequests = () => {
     // Fetch the pickup requests data from the API
     const fetchData = async () => {
       try {
-        const url = 'https://4h7b6re1c7.execute-api.us-east-1.amazonaws.com/dev/pickup-request/1234934934';
+        const url = 'https://324q8p7pd4.execute-api.us-east-1.amazonaws.com/dev/pickup-request/1234934934';
         const response = await axios.get(url);
         console.log(response)
         const { data } = response.data;
