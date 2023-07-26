@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Box, Container, Grid, InputLabel } from '@mui/material';
 import axios from 'axios';
+import Navbar from '../NavBar';
+import Footer from '../Footer';
 
 const PickupForm = () => {
   const initialFormData = {
@@ -30,7 +32,7 @@ const PickupForm = () => {
               'Content-Type': 'application/json',
             },
           };    
-      const url = 'https://4h7b6re1c7.execute-api.us-east-1.amazonaws.com/dev/pickup-request';
+      const url = 'https://1ccnax507l.execute-api.us-east-1.amazonaws.com/dev/pickup-request';
       console.log(formData)
       const response = await axios.post(url, formData, config);
       console.log('API Response:', response.data);
@@ -51,7 +53,9 @@ const PickupForm = () => {
 
 
   return (
+<div>
     <Container maxWidth="sm">
+
       <Box component="div" p={2} textAlign="center">
         {submissionStatus === 'success' && (
           <Typography variant="h6" color="success">
@@ -218,6 +222,7 @@ const PickupForm = () => {
         </form>
       </Box>
     </Container>
+    </div>
   );
 };
 

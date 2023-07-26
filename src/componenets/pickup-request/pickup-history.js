@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import axios from 'axios';
+import Navbar from '../NavBar';
+import Footer from '../Footer';
 
 const PickupRequests = () => {
   const [pickupRequests, setPickupRequests] = useState([]);
@@ -39,8 +41,9 @@ const PickupRequests = () => {
   
   return (
     <div>
+     <Navbar></Navbar>
       <Typography variant="h4" align="center" gutterBottom>
-        Pickup Requests
+        Pickup history
       </Typography>
       {pickupRequests.length === 0 ? (
         <Typography variant="body1" align="center">
@@ -90,6 +93,7 @@ const PickupRequests = () => {
           </Table>
         </TableContainer>
       )}
+      <Footer></Footer>
     </div>
   );
 };

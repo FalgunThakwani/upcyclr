@@ -7,14 +7,17 @@ import PickupRequests from './componenets/pickup-request/pickup-history';
 import Account from './componenets/Account';
 import SignIn from './componenets/ignIn';
 import { AuthContextProvider } from './context/AuthContext';
+import Navbar from './componenets/NavBar';
+import Footer from './componenets/Footer';
 
 
 const App = () => {
   return (
     <div>
-
+      
     <AuthContextProvider>
       <BrowserRouter>
+      <Navbar></Navbar>
       <Routes>
         <Route exact path="/" element={<Home/>} />
         <Route path = '/SignIn' element ={<SignIn/>}/>
@@ -24,6 +27,7 @@ const App = () => {
         <Route exact path="/pickup-history" element={<PickupRequests/>} />
         {/* Add more routes here if needed */}
       </Routes>
+      <Footer></Footer>
       </BrowserRouter>
       </AuthContextProvider>
       </div>
