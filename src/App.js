@@ -10,6 +10,8 @@ import { rewardsData } from './components/reward-system/rewards-data';
 import { useState, createContext } from 'react';
 import Account from './components/Account';
 import SignIn from './components/ignIn';
+import LoginPage from './componenets/LoginPage';
+import RegistrationPage from './componenets/RegistrationPage';
 import { AuthContextProvider } from './context/AuthContext';
 import Navbar from './components/NavBar';
 import Footer from './components/Footer';
@@ -36,6 +38,8 @@ const App = () => {
         <Route exact path="/admin" element={<PickUpRequests/>} />
         <Route exact path="/pickUp" element={<PickupForm/>} />
         <Route exact path="/pickup-history" element={<PickupRequests/>} />
+        <Route exact path="/login" element={<LoginPage/>} />
+        <Route path="/register" element={<RegistrationPage/>} />
         <Route exact path="/rewards" element={<Rewards/>} />
         <Route
           path="/rewards/:rewardId"
