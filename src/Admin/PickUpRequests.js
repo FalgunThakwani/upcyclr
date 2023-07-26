@@ -41,6 +41,8 @@ const ActionButtonsWrapper = styled(TableCell)(({ theme }) => ({
 const statuses = ["In-Progress", "PickUp-Scheduled", "Complete"];
 
 const PickUpRequests = () => {
+  const [newItem, setNewItem] = useState({ type: "", weight: "", unit: "" });
+  const [editedReward, setEditedReward] = useState(""); 
   const [items, setItems] = useState([
     {
       id: "1",
@@ -53,8 +55,7 @@ const PickUpRequests = () => {
       status: "PickUp Scheduled",
       reward: "0",
       items_in_bag: [
-        { type: "Plastic", weight: "500", unit: "miligrams" },
-        { type: "Clothes", weight: "200", unit: "miligrams" },
+        
       ],
     },
     {
@@ -68,8 +69,7 @@ const PickUpRequests = () => {
       status: "In-Progress",
       reward: "10",
       items_in_bag: [
-        { type: "Electronics", weight: "1000", unit: "grams" },
-        { type: "Paper", weight: "300", unit: "grams" },
+       
       ],
     },
   ]);
@@ -84,21 +84,32 @@ const PickUpRequests = () => {
   };
 
   const handleBagItemChange = (itemId, index, field, value) => {
-    const updatedItems = items.map((item) => {
-      if (item.id === itemId) {
-        const updatedBagItems = item.items_in_bag.map((bagItem, bagIndex) =>
-          bagIndex === index ? { ...bagItem, [field]: value } : bagItem
-        );
-        return { ...item, items_in_bag: updatedBagItems };
-      } else {
-        return item;
-      }
+    setItems((prevItems) => {
+      const updatedItems = prevItems.map((item) => {
+        if (item.id === itemId) {
+          const updatedBagItems = item.items_in_bag.map((bagItem, bagIndex) =>
+            bagIndex === index ? { ...bagItem, [field]: value } : bagItem
+          );
+          return { ...item, items_in_bag: updatedBagItems };
+        } else {
+          return item;
+        }
+      });
+      return updatedItems;
     });
-    setItems(updatedItems);
   };
 
   const handleEdit = (itemId) => {
     setEditingItemId(itemId);
+  };
+
+  const handleRewardChange = (itemId, newReward) => {
+    setItems((prevItems) => {
+      const updatedItems = prevItems.map((item) =>
+        item.id === itemId ? { ...item, reward: newReward } : item
+      );
+      return updatedItems;
+    });
   };
 
   const handleSave = () => {
@@ -111,8 +122,34 @@ const PickUpRequests = () => {
     //     'Content-Type': 'application/json',
     //   },
     // });
+    setItems((prevItems) => {
+      return prevItems.map((item) => {
+        if (item.id === editingItemId) {
+          return { ...item, reward: editedReward !== "" ? editedReward : item.reward };
+        } else {
+          return item;
+        }
+      });
+    });
+    setEditedReward(""); 
     setEditingItemId(null); // Disable editing mode
   };
+
+  const handleAddNewItem = () => {
+    setItems((prevItems) => {
+      const updatedItems = prevItems.map((item) => {
+        if (item.id === editingItemId) {
+          return { ...item, items_in_bag: [...item.items_in_bag, newItem] };
+        } else {
+          return item;
+        }
+      });
+      setNewItem({ type: "", weight: "", unit: "" }); // Reset newItem state
+      return updatedItems;
+    });
+  };
+
+    
 
   return (
     <ContainerWrapper>
@@ -172,48 +209,72 @@ const PickUpRequests = () => {
                     item.pickup_by
                   )}
                 </TableCell>
-                <TableCell>
-                  {editingItemId === item.id ? (
-                    <Table>
-                      {/* <TableHead>
-                        <TableRow>
-                          <TableCell>Type</TableCell>
-                          <TableCell>Weight</TableCell>
-                          <TableCell>Unit</TableCell>
-                        </TableRow>
-                      </TableHead> */}
-                      <TableBody>
-                        {item.items_in_bag.map((bagItem, index) => (
-                          <TableRow key={index}>
-                            <TableCell>
-                              <TextField
-                                value={bagItem.type}
-                                onChange={(e) =>
-                                  handleBagItemChange(item.id, index, "type", e.target.value)
-                                }
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                value={bagItem.weight}
-                                onChange={(e) =>
-                                  handleBagItemChange(item.id, index, "weight", e.target.value)
-                                }
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <TextField
-                                value={bagItem.unit}
-                                onChange={(e) =>
-                                  handleBagItemChange(item.id, index, "unit", e.target.value)
-                                }
-                              />
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  ) : (
+              <TableCell>
+              {editingItemId === item.id ? (
+                <Table>
+                  <TableBody>
+                    {item.items_in_bag.map((bagItem, index) => (
+                      <TableRow key={index}>
+                        <TableCell>
+                          <TextField
+                            value={bagItem.type}
+                            onChange={(e) =>
+                              handleBagItemChange(item.id, index, "type", e.target.value)
+                            }
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            value={bagItem.weight}
+                            onChange={(e) =>
+                              handleBagItemChange(item.id, index, "weight", e.target.value)
+                            }
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TextField
+                            value={bagItem.unit}
+                            onChange={(e) =>
+                              handleBagItemChange(item.id, index, "unit", e.target.value)
+                            }
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+
+                    {/* Step 4: Display the new item input fields when in edit mode */}
+                    <TableRow>
+                      <TableCell>
+                        <TextField
+                          value={newItem.type} // <- Make sure to include these values
+                          onChange={(e) => setNewItem({ ...newItem, type: e.target.value })}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          value={newItem.weight} // <- Make sure to include these values
+                          onChange={(e) => setNewItem({ ...newItem, weight: e.target.value })}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          value={newItem.unit} // <- Make sure to include these values
+                          onChange={(e) => setNewItem({ ...newItem, unit: e.target.value })}
+                        />
+                      </TableCell>
+                    </TableRow>
+
+                    {/* Step 5: Display the "Add Item" button */}
+                    <TableRow>
+                      <TableCell colSpan={3}>
+                        <Button variant="contained" color="primary" onClick={handleAddNewItem}>
+                          Add Item
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              ) : ( 
                     // Display items in bag
                     <Table>
                       {/* <TableHead>
@@ -251,7 +312,19 @@ const PickUpRequests = () => {
                     item.status
                   )}
                 </TableCell>
-                <TableCell>{item.reward}</TableCell>
+                <TableCell>
+            {editingItemId === item.id ? (
+              // Show text input in edit mode
+              <TextField
+                type="text"
+                value={editedReward !== "" ? editedReward : item.reward}
+                onChange={(e) => setEditedReward(e.target.value)}
+              />
+            ) : (
+              // Display reward value in non-edit mode
+              item.reward
+            )}
+          </TableCell>
                 <ActionButtonsWrapper>
                   {editingItemId === item.id ? (
                     <Button variant="contained" color="primary" onClick={handleSave}>
