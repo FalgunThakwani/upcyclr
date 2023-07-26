@@ -31,6 +31,9 @@ const Navbar = () => {
         <CustomLink to="/pickup-history">
           <Button color="inherit">History</Button>
         </CustomLink>
+        <CustomLink to="/rewards">
+          <Button color="inherit">Rewards</Button>
+        </CustomLink>
       </Toolbar>
     </CustomAppBar>
   );

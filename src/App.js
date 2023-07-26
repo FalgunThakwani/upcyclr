@@ -8,11 +8,11 @@ import { Rewards } from './components/reward-system/rewards';
 import { RewardDetail } from './components/reward-system/reward-detail-page';
 import { rewardsData } from './components/reward-system/rewards-data';
 import { useState, createContext } from 'react';
-import Account from './componenets/Account';
-import SignIn from './componenets/ignIn';
+import Account from './components/Account';
+import SignIn from './components/ignIn';
 import { AuthContextProvider } from './context/AuthContext';
-import Navbar from './componenets/NavBar';
-import Footer from './componenets/Footer';
+import Navbar from './components/NavBar';
+import Footer from './components/Footer';
 
 //State management: Global context
 export const AppContext = createContext();
@@ -26,7 +26,6 @@ const App = () => {
     <AuthContextProvider>
       <BrowserRouter>
       <Navbar></Navbar>
-      <Link to={"/rewards"}> Rewards </Link>
       <AppContext.Provider value={
         {rewards, setRewards}
         }>
