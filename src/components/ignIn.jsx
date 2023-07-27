@@ -86,7 +86,7 @@ const SigninGoogle = () => {
     
 
     useEffect(() => {
-        if (user != null ){
+        if (user != undefined ){
             
         uid=user.uid;
         if(user.displayName == null){
@@ -95,7 +95,7 @@ const SigninGoogle = () => {
         else
           Name = user.displayName
         initialUser()
-        navigate('/Account')
+        navigate('/Home2')
         }
           
         console.log(user)

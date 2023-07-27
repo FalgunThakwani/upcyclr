@@ -1,0 +1,7 @@
+.history-table-container {
+    display: flex;
+    justify-content: center;
+}
+.heading {
+    font-weight: 600;
+}
