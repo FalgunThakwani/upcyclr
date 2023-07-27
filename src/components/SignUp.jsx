@@ -9,18 +9,21 @@ const SignUp = () => {
 
     const emailRef = useRef()
     const passwordRef = useRef()
+    const displayNameRef = useRef()
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+  
 
   const navigate = useNavigate()
    
   const signUp = (e) => {
     e.preventDefault();
-    createUserWithEmailAndPassword( auth, email, password)
+    createUserWithEmailAndPassword( auth,email, password)
     .then((userCredential) => {
         console.log(userCredential)
         navigate('/SignIn')
+        
         return ("Sign Up Success!!")
        
     }).catch((error) => {
@@ -40,6 +43,7 @@ const SignUp = () => {
                     <Form.Label>Email</Form.Label>
                     <Form.Control type="email" ref = {emailRef} onChange={(e)=> setEmail(e.target.value)} required />
                     </Form.Group>
+
 
                     <Form.Group id="password">
                     <Form.Label>Password</Form.Label>

@@ -5,6 +5,9 @@ import { UserAuth } from "../context/AuthContext";
 import {useNavigate} from 'react-router-dom';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseAuth";
+import PickUpRequests from "../Admin/PickUpRequests";
+import axios from "axios";
+import { setUserId } from "firebase/analytics";
 
 
 
@@ -15,9 +18,11 @@ const SigninGoogle = () => {
     
     const emailRef = useRef()
     const passwordRef = useRef()
+    const displayNameRef = useRef()
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
 
     //sign up
    
@@ -40,6 +45,36 @@ const SigninGoogle = () => {
         
     }
 
+
+   //Fetch uid
+
+   let uid; 
+   let Name;// Replace this with your UID   // Function to check if the ID exists in the JSON object  
+   const isUidInItems = (data) => {     return data.Items.some(item => item.id === uid);   };   
+   // Function to make the POST request  
+   const makePostRequest = () => {     const postData = {       id: uid,       email: user.email,       username: Name,       rewards: 0    };    
+    axios.post("https://ebava5cw1m.execute-api.us-east-1.amazonaws.com/default/UserDBService", postData)       .then(response => {         
+    // Handle the response if needed        
+    console.log("POST request successful:", response.data);       })       .catch(error => {         
+        // Handle errors if needed        
+        console.error("Error making POST request:", error);       });   
+    
+    };   
+        
+        
+        
+        const initialUser = () => {    
+             // Fetch the JSON data from the GET request   
+              axios.get("https://ebava5cw1m.execute-api.us-east-1.amazonaws.com/default/UserDBService")       .then(response => {         const data = response.data;         
+                // Check if the ID exists in the "Items" array        
+                if (!isUidInItems(data)) {           
+                    // If the ID does not exist, make the POST request          
+                    makePostRequest();         }       })       .catch(error => {         
+                        // Handle errors if needed        
+                        console.error("Error fetching data:", error);       });   };
+
+
+
     const handleGoogleSignIn = async () => {
         try{
             await googleSignIn();
@@ -48,11 +83,25 @@ const SigninGoogle = () => {
         }
     }
 
+    
+
     useEffect(() => {
-        if (user != null )
-          navigate('/Account')
+        if (user != null ){
+            
+        uid=user.uid;
+        if(user.displayName == null){
+            Name = user.email
+        }
+        else
+          Name = user.displayName
+        initialUser()
+        navigate('/Account')
+        }
+          
         console.log(user)
     }, [user])
+
+
 
 return(
 <>
