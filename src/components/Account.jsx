@@ -19,13 +19,14 @@ const SignoutGoogle = () => {
          console.log(error)
         }
     }
-
-
+    const username = user.uid;
+    console.log(username)
+   
 return(
 <>
 <Card>
     <Card.Body>
-        <h2 className="text-center mb-4">Welcome {user?.displayName}</h2>
+        <h2 className="text-center mb-4">Welcome {user?.displayName || user?.email}</h2>
         
     </Card.Body>
 </Card>

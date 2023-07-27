@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes, Link} from "react-router-dom";
 import Home from './components/Home';
+import SignUp from './components/SignUp';
 import PickUpRequests from './Admin/PickUpRequests';
 import PickupForm from './components/pickup-request/pickup';
 import PickupRequests from './components/pickup-request/pickup-history';
@@ -18,7 +19,7 @@ import Footer from './components/Footer';
 export const AppContext = createContext();
 
 const App = () => {
-  const [rewards, setRewards] = useState(rewardsData);
+  const [rewards, setRewards] = useState([]);
 
   return (
     <div>
@@ -32,6 +33,7 @@ const App = () => {
       <Routes>
         <Route exact path="/" element={<Home/>} />
         <Route path = '/SignIn' element ={<SignIn/>}/>
+        <Route path = '/SignUp' element={<SignUp/>}/>
         <Route path = '/Account' element = {<Account/>}/>
         <Route exact path="/admin" element={<PickUpRequests/>} />
         <Route exact path="/pickUp" element={<PickupForm/>} />
