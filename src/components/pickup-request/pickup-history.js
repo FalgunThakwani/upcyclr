@@ -3,15 +3,20 @@ import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, Tab
 import axios from 'axios';
 import Navbar from '../NavBar';
 import Footer from '../Footer';
+import { UserAuth } from '../../context/AuthContext';
+
 
 const PickupRequests = () => {
   const [pickupRequests, setPickupRequests] = useState([]);
+  const user = UserAuth();
+  const userId = user.user.uid;
 
   useEffect(() => {
     // Fetch the pickup requests data from the API
     const fetchData = async () => {
         try {
-            const url = 'https://324q8p7pd4.execute-api.us-east-1.amazonaws.com/dev/pickup-request/1234934934';
+
+            var url = 'https://324q8p7pd4.execute-api.us-east-1.amazonaws.com/dev/pickup-request/' + userId;
             
             // Make the fetch request
             const response = await fetch(url);
@@ -24,24 +29,24 @@ const PickupRequests = () => {
             // Parse the response JSON
             const data = await response.json();
             console.log(data);
-            console.log(data.data)
             
             // Assuming 'data' contains the 'Items' array from the response
             setPickupRequests(data.data);
             console.log(pickupRequests)
+            console.log(user);
+            console.log(user.user.id);
+            console.log(user.user);
           } catch (error) {
             console.error('API Error:', error);
           }
-          
     };
-
     fetchData();
-  }, []);
+  }, [userId]);
 
   
   return (
     <div>
-     <Navbar></Navbar>
+     {/* <Navbar></Navbar> */}
       <Typography variant="h4" align="center" gutterBottom>
         Pickup history
       </Typography>
