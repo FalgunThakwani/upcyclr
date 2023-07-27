@@ -14,6 +14,7 @@ import {
   Paper,
   TextField,
 } from "@mui/material";
+import axios from 'axios';
 import { styled } from "@mui/material/styles";
 
 const ContainerWrapper = styled(Container)({
@@ -136,18 +137,18 @@ const PickUpRequests = () => {
 
   const sendUpdatedItems = async (updatedItem) => {
     try {
-      const response = await fetch("https://fratlvuuxh.execute-api.us-east-1.amazonaws.com/default/AdminPickUpRequest ", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedItem),
-      });
-
+      // const response = await fetch("https://fratlvuuxh.execute-api.us-east-1.amazonaws.com/default/AdminPickUpRequest ", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(updatedItem),
+      // });
+      initialUser(updatedItem);
       // Check if the request was successful
-      if (!response.ok) {
-        throw new Error("Error saving data");
-      }
+      // if (!response.ok) {
+      //   throw new Error("Error saving data");
+      // }
 
       // If successful, you can handle the response here
       // For example, show a success message or perform additional actions
@@ -157,6 +158,51 @@ const PickUpRequests = () => {
       // Handle error (e.g., show an error message to the user)
     }
   };
+
+  const makePostRequest = (item) => {
+    const postData = {
+      id: item.id,
+      email: item.email,
+      username: item.username,
+      rewards: item.rewards
+    };
+    console.log(item.rewards)
+    axios.post("https://ebava5cw1m.execute-api.us-east-1.amazonaws.com/default/UserDBService", postData)
+      .then(response => {
+        // Handle the response if needed
+        console.log("POST request successful:", response.data);
+      })
+      .catch(error => {
+        // Handle errors if needed
+        console.error("Error making POST request:", error);
+      });
+  };
+
+  const initialUser = (updatedItem) => {
+    // Fetch the JSON data from the GET request
+    axios.get("https://ebava5cw1m.execute-api.us-east-1.amazonaws.com/default/UserDBService")
+      .then(response => {
+        const data = response.data;
+        // Check if the ID exists in the "Items" array
+        console.log("GET DATA"+data)
+        const existingItem =data.Items.find(item => item.id === updatedItem.user.id);
+        console.log(existingItem)
+        const updateReward =  updatedItem.reward;
+        console.log("update Reward"+updateReward)
+        const userRewards = parseInt(existingItem.rewards)+parseInt(parseInt(updateReward));
+        console.log("User Reward"+userRewards)
+        existingItem.rewards = userRewards;
+          // If the ID does not exist, make the POST request
+
+       makePostRequest(existingItem);
+        }
+      )
+      .catch(error => {
+        // Handle errors if needed
+        console.error("Error fetching data:", error);
+      });
+  };
+
 
   const handleSave = () => {
     let updateItem;
