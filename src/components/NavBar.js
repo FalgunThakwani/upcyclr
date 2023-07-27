@@ -23,7 +23,7 @@ const Navbar = () => {
     <CustomAppBar position="static">
       <Toolbar>
         <CustomTypography variant="h6">
-          <CustomLink to="/">Upcyclr</CustomLink>
+          <CustomLink to="/Account">Upcyclr</CustomLink>
         </CustomTypography>
         <CustomLink to="/pickup">
           <Button color="inherit">PickUp</Button>

@@ -19,8 +19,8 @@ const SignoutGoogle = () => {
          console.log(error)
         }
     }
-    const username = user.uid;
-    console.log(username)
+    // const username = user.uid;
+    // console.log(username)
    
 return(
 <>

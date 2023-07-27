@@ -135,20 +135,30 @@ const PickUpRequests = () => {
     });
   };
 
+  const handlePickUpByChange = (itemId, pickup_by) => {
+    console.log(pickup_by);
+    setItems((prevItems) => {
+      const updatedItems = prevItems.map((item) =>
+        item.id === itemId ? { ...item, pickup_by: pickup_by } : item
+      );
+      return updatedItems;
+    });
+  };
+
   const sendUpdatedItems = async (updatedItem) => {
     try {
-      // const response = await fetch("https://fratlvuuxh.execute-api.us-east-1.amazonaws.com/default/AdminPickUpRequest ", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(updatedItem),
-      // });
+      const response = await fetch("https://fratlvuuxh.execute-api.us-east-1.amazonaws.com/default/AdminPickUpRequest ", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedItem),
+      });
       initialUser(updatedItem);
-      // Check if the request was successful
-      // if (!response.ok) {
-      //   throw new Error("Error saving data");
-      // }
+      //Check if the request was successful
+      if (!response.ok) {
+        throw new Error("Error saving data");
+      }
 
       // If successful, you can handle the response here
       // For example, show a success message or perform additional actions
@@ -278,7 +288,7 @@ const PickUpRequests = () => {
                     <TextField
                       type="text"
                       value={item.pickup_by}
-                      onChange={(e) => handleStatusChange(item.id, e.target.value)}
+                      onChange={(e) => handlePickUpByChange(item.id, e.target.value)}
                     />
                   ) : (
                     item.pickup_by
