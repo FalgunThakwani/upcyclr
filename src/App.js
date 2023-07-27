@@ -6,11 +6,10 @@ import PickupForm from './components/pickup-request/pickup';
 import PickupRequests from './components/pickup-request/pickup-history';
 import { Rewards } from './components/reward-system/rewards';
 import { RewardDetail } from './components/reward-system/reward-detail-page';
-import { rewardsData } from './components/reward-system/rewards-data';
 import { useState, createContext } from 'react';
 import Account from './components/Account';
 import SignIn from './components/ignIn';
-import { AuthContextProvider } from './context/AuthContext';
+import { AuthContextProvider, UserAuth } from './context/AuthContext';
 import Navbar from './components/NavBar';
 import Footer from './components/Footer';
 
@@ -18,11 +17,10 @@ import Footer from './components/Footer';
 export const AppContext = createContext();
 
 const App = () => {
-  const [rewards, setRewards] = useState(rewardsData);
+  const [rewards, setRewards] = useState([]);
 
   return (
-    <div>
-      
+    <div> 
     <AuthContextProvider>
       <BrowserRouter>
       <Navbar></Navbar>
@@ -45,7 +43,7 @@ const App = () => {
       </Routes>
       <Footer></Footer>
         </AppContext.Provider>
-    </BrowserRouter>
+      </BrowserRouter>
       </AuthContextProvider>
       </div>
   );
