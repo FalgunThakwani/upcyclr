@@ -19,7 +19,7 @@ import Footer from './components/Footer';
 export const AppContext = createContext();
 
 const App = () => {
-  const [rewards, setRewards] = useState(rewardsData);
+  const [rewards, setRewards] = useState([]);
 
   return (
     <div>

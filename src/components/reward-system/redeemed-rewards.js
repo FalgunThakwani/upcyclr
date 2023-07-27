@@ -1,11 +1,19 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../../App';
+import { UserAuth } from "../../context/AuthContext";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Link } from '@mui/material';
 
 
 export const RedeemedRewards = () => {
+    const { user } = UserAuth();
     const { rewards } = useContext(AppContext);
-    const redeemedRewards = rewards.filter((reward) => reward.isRedeemed);
+
+    if (!user || !rewards) {
+      return (<div><h5> You have not redeemed any reward. Click on redeem from the available list to get started </h5></div>);
+    }
+
+    const redeemedRewards = rewards.filter((reward) => reward.redeemedBy && reward.redeemedBy.includes(user.uid));
+    console.log(user.uid);
   
     return (
         <div>
@@ -35,20 +43,4 @@ export const RedeemedRewards = () => {
       </div>
     );
   };
-  
 
-// export const RedeemedRewards = () => {
-//   const { rewards } = useContext(AppContext);
-//   const redeemedRewards = rewards.filter((reward) => reward.isRedeemed);
-
-//   return (
-//     <div>
-//       {redeemedRewards.map((reward) => (
-//         <div key={reward.id}>
-//           <h3>{reward.title}</h3>
-//           <p>{reward.description}</p>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
