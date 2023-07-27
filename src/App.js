@@ -9,12 +9,15 @@ import { RewardDetail } from './components/reward-system/reward-detail-page';
 import { rewardsData } from './components/reward-system/rewards-data';
 import { useState, createContext } from 'react';
 import Account from './components/Account';
-import {LoginPage} from './componenets/LoginPage';
-import {RegistrationPage} from './componenets/RegistrationPage';
+
+// import {LoginPage} from './componenets/LoginPage';
+
 import SignIn from './components/ignIn';
 import { AuthContextProvider } from './context/AuthContext';
 import Navbar from './components/NavBar';
 import Footer from './components/Footer';
+import LoginPage from './components/LoginPage';
+import RegistrationPage from './componenets/RegistrationPage';
 
 //State management: Global context
 export const AppContext = createContext();
