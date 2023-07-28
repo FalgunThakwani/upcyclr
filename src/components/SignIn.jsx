@@ -148,6 +148,7 @@ const SignInForm = () => {
                   variant="outlined"
                   name="Password"
                   fullWidth
+                  type='password'
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required

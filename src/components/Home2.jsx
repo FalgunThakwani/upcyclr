@@ -7,7 +7,7 @@ const HomePage2 = () => {
   const navigate = useNavigate()
 
   const handleSignInClick = () => {
-    navigate('/Login')
+    navigate('/SignIn')
   };
 
   const [item, setItem] = useState('');
@@ -87,6 +87,8 @@ const HomePage2 = () => {
                 src="https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=286"
                 srcSet="https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=286&dpr=2 2x"
                 loading="lazy"
+                width="200px"
+                height="200px"
                 alt=""
               />
             </div>
@@ -118,9 +120,10 @@ const HomePage2 = () => {
             </div>
             <div className='card-image'>
               <img
-                src="https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=286"
-                srcSet="https://images.unsplash.com/photo-1527549993586-dff825b37782?auto=format&fit=crop&w=286&dpr=2 2x"
-                loading="lazy"
+                src="https://postertemplate.co.uk/wp-content/uploads/2018/07/File-1516201467-1.png"
+                // loading="lazy"
+                width="200px"
+                height="200px"
                 alt=""
               />
             </div>

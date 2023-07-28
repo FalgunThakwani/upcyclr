@@ -35,7 +35,8 @@ export const Rewards = () => {
 
   
     return (
-      <div>
+      <div style={{ background: 'linear-gradient(to bottom, #f0f0f0, #d3ffd3)', minHeight: '100vh', padding: '16px' }}>
+      {/* <Navbar></Navbar> */}
           <AvailableRewardsScrollView />
           <RedeemedRewards />
       </div>

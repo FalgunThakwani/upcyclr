@@ -95,7 +95,7 @@ export const RewardDetail = () => {
 
 
   return (
-    <div>
+<div style={{ background: 'linear-gradient(to bottom, #f0f0f0, #d3ffd3)', minHeight: '100vh', padding: '16px' }}>
           <h2>{reward.title}</h2>
           <p>{reward.description}</p>
           <p>Points required: {reward.points}</p>

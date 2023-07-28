@@ -6,7 +6,7 @@ const FooterWrapper = styled('footer')({
   backgroundColor: '#333',
   color: 'white',
   padding: '16px',
-  // position: 'fixed',
+  //position: 'fixed',
   bottom: 0,
   left: 0,
   width: '100%',
