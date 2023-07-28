@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Box, Container, Grid, InputLabel } from '@mui/material';
 import axios from 'axios';
+
+import { UserAuth } from '../../context/AuthContext';
 import Navbar from '../NavBar';
 import Footer from '../Footer';
 
@@ -20,6 +22,13 @@ const PickupForm = () => {
     pickup_end_ts: ''
   };
 
+  const user = UserAuth()
+  console.log(user.user.displayName)
+  console.log(user.user.uid)
+
+  const userId = user.user.uid;
+  var userName = user.user.displayName;
+
   const [formData, setFormData] = useState(initialFormData);
   const [submissionStatus, setSubmissionStatus] = useState('');
 
@@ -32,6 +41,12 @@ const PickupForm = () => {
               'Content-Type': 'application/json',
             },
           };    
+      formData.user.id = userId;
+      if(!userName){
+        userName = user.user.email;
+      }
+      formData.user.name = userName;
+      console.log(formData)
       const url = 'https://1ccnax507l.execute-api.us-east-1.amazonaws.com/dev/pickup-request';
       console.log(formData)
       const response = await axios.post(url, formData, config);
@@ -71,28 +86,28 @@ const PickupForm = () => {
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             {/* User Information */}
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <TextField
                 label="User ID"
                 variant="outlined"
                 name="user.id"
                 fullWidth
-                value={formData.user.id}
+                value={user.user.id}
                 onChange={(e) => setFormData({ ...formData, user: { ...formData.user, id: e.target.value } })}
                 required
               />
-            </Grid>
-            <Grid item xs={12}>
+            </Grid> */}
+            {/* <Grid item xs={12}>
               <TextField
                 label="User Name"
                 variant="outlined"
                 name="user.name"
                 fullWidth
-                value={formData.user.name}
+                value={user.user.displayName || "No name user"}
                 onChange={(e) => setFormData({ ...formData, user: { ...formData.user, name: e.target.value } })}
                 required
               />
-            </Grid>
+            </Grid> */}
 
             {/* Pickup Address */}
             <Grid item xs={12}>

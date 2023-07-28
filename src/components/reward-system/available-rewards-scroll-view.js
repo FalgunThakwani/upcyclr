@@ -3,10 +3,17 @@ import { Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { AppContext } from '../../App.js';
+import { UserAuth } from '../../context/AuthContext'; // Make sure to import UserAuth
 
 export const AvailableRewardsScrollView = () => {
     const { rewards } = useContext(AppContext);
-    const unredeemedRewards = rewards.filter((reward) => !reward.isRedeemed);
+    const { user } = UserAuth(); // Retrieve the current user
+    
+    // Filter the rewards to only include those that haven't been redeemed by the current user
+    const unredeemedRewards = rewards.filter((reward) => {
+        return !reward.redeemedBy || !reward.redeemedBy.includes(user.uid);
+    });
+
     return (
         <div>
             <Typography variant="h4" gutterBottom>
