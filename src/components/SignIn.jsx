@@ -111,7 +111,7 @@ const SignInForm = () => {
   }, [user]);
 
   return (
-    <div>
+<div style={{ background: 'linear-gradient(to bottom, #f0f0f0, #d3ffd3)', minHeight: '100vh', padding: '16px' }}>
       <Container maxWidth="sm">
         <Box component="div" p={2} textAlign="center">
           {submissionStatus === 'success' && (

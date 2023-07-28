@@ -57,10 +57,10 @@ return(
       <Card variant="outlined" sx={{ width: 300 }}>
         <CardContent>
           <Typography variant="h2" sx={{ m: 10 }}>
-            User: {username}
+            Welcome {username}
           </Typography>
           <Typography variant="h3" sx={{ m: 10 }}>
-            Reward: {reward}
+           Your Collected Reward is {reward}
           </Typography>
         </CardContent>
       </Card>
