@@ -20,6 +20,10 @@ button {
     border-bottom: 3px solid #008c59;
     height: 200px;
 }
+.account-card {
+    background-color: lightblue;
+}
+
 .login-button {
     margin-top: 45px !important;
 }
