@@ -103,8 +103,8 @@ const SignInForm = () => {
       } else {
         Name = user.displayName;
       }
-    //   initialUser();
-    //   navigate('/Account');
+      initialUser();
+      navigate('/Account');
     }
 
     console.log(user);
